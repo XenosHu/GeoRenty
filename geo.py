@@ -25,11 +25,13 @@ raw['postal_code'] = raw['postal_code'].astype(int)
 # Group by 'postal_code' and calculate the average price
 grouped_data = raw.groupby('postal_code').agg({'price': 'mean', 'latitude': 'mean', 'longitude': 'mean'}).reset_index()
 
-# Define a function to convert price to a color (green to red gradient)
+
+# Get the maximum price for the gradient calculation
+max_price = grouped_data['price'].max()
+
+# Define a function to convert price to a gradient color (green to red)
 def price_to_color(price):
-    max_price = grouped_data['price'].max()
-    min_price = grouped_data['price'].min()
-    normalized_price = (price - min_price) / (max_price - min_price)
+    normalized_price = price / max_price
     red = int(normalized_price * 255)
     green = int((1 - normalized_price) * 255)
     blue = 0
@@ -37,25 +39,18 @@ def price_to_color(price):
 
 grouped_data['color'] = grouped_data['price'].apply(price_to_color)
 
+
 # PyDeck map
 st.pydeck_chart(pdk.Deck(
     map_style=None,
     initial_view_state=pdk.ViewState(
-        latitude=max_lat,
-        longitude=max_lon,
-        zoom=11
+        latitude=grouped_data['latitude'].mean(),
+        longitude=grouped_data['longitude'].mean(),
+        zoom=11,
+        pitch = 50
+        #pitch=st.slider('Adjust View Angle', 0, 60, 50)
     ),
     layers=[
-        pdk.Layer(
-            'HexagonLayer',
-            data=raw,
-            get_position='[lon, lat]',
-            radius=200,
-            elevation_scale=4,
-            elevation_range=[0, 1000],
-            pickable=True,
-            extruded=True,
-        ),
         pdk.Layer(
             'ColumnLayer',
             data=grouped_data,
