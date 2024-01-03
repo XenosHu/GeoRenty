@@ -4,13 +4,14 @@ import numpy as np
 import pydeck as pdk
 
 
-chart_data = pd.read_csv('zillow.csv')
+raw = pd.read_csv('zillow.csv')
+
 
 st.pydeck_chart(pdk.Deck(
     map_style=None,
     initial_view_state=pdk.ViewState(
-        latitude=37.76,
-        longitude=-122.4,
+        latitude=-74.1,
+        longitude=40.7,
         zoom=11,
         pitch=50,
     ),
@@ -27,8 +28,8 @@ st.pydeck_chart(pdk.Deck(
         ),
         pdk.Layer(
             'ScatterplotLayer',
-            data=chart_data,
-            get_position='[lon, lat]',
+            data=raw,
+            get_position='[longitude, latitude]',
             get_color='[200, 30, 0, 160]',
             get_radius=200,
         ),
