@@ -14,22 +14,19 @@ raw['price'] = raw['price'].replace('[\$,\/mo\+]', '', regex=True)
 
 # Convert the 'price' column to integers
 raw['price'] = raw['price'].astype(int)
+raw = raw[raw['homeType']== 'APARTMENT']
 
 # Calculate the mean latitude and longitude
-mean_lat = raw['latitude'].mean()
-mean_lon = raw['longitude'].mean()
-
-# Streamlit slider for adjusting the pitch (view angle)
-pitch = st.slider('Adjust View Angle', 0, 60, 50)
+max_lat = raw['latitude'].max()
+max_lon = raw['longitude'].max()
 
 # PyDeck map
 st.pydeck_chart(pdk.Deck(
     map_style=None,
     initial_view_state=pdk.ViewState(
-        latitude=mean_lat,
-        longitude=mean_lon,
-        zoom=11,
-        pitch=pitch,
+        latitude=max_lat,
+        longitude=max_lon,
+        zoom=11
     ),
     layers=[
         pdk.Layer(
