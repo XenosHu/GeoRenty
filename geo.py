@@ -49,7 +49,7 @@ with open('georef-united-states-of-america-zc-point.geojson', 'r') as f:
 
 for feature in geojson_data['features']:
     # Extract zip code from feature properties
-    zip_code = feature['properties']['Zip code']  # Replace with actual field name
+    zip_code = feature['properties']['zip_code']
     
     # Find matching data in grouped_data
     match = grouped_data[grouped_data['postal_code'] == zip_code]
