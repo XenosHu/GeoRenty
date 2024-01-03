@@ -16,8 +16,7 @@ raw['price'] = raw['price'].replace('[\$,\/mo\+]', '', regex=True)
 raw['price'] = raw['price'].astype(int)
 raw = raw[raw['homeType']== 'APARTMENT']
 
-raw = raw[raw['price'] != 160000]
-raw = raw[raw['price'] != 80000]
+raw = raw[raw['price'] <= 10000]
 
 # Calculate the mean latitude and longitude
 max_lat = raw['latitude'].max()
@@ -47,8 +46,8 @@ grouped_data['color'] = grouped_data['price'].apply(price_to_color)
 st.pydeck_chart(pdk.Deck(
     map_style=None,
     initial_view_state=pdk.ViewState(
-        latitude=grouped_data['latitude'].mean(),
-        longitude=grouped_data['longitude'].mean(),
+        latitude=40.703,
+        longitude=-74.009,
         zoom=11,
         pitch = 50
         #pitch=st.slider('Adjust View Angle', 0, 60, 50)
