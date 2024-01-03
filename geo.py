@@ -9,8 +9,11 @@ raw = pd.read_csv('zillow.csv')
 # Remove rows where 'price' is NaN
 raw = raw.dropna(subset=['price'])
 
-# Parse the 'price' column to integers
-raw['price'] = raw['price'].replace('[\$,\/mo]', '', regex=True).astype(int)
+# Clean the 'price' column to remove non-numeric characters (like '$', ',', '/mo', '+')
+raw['price'] = raw['price'].replace('[\$,\/mo\+]', '', regex=True)
+
+# Convert the 'price' column to integers
+raw['price'] = raw['price'].astype(int)
 
 # Calculate the mean latitude and longitude
 mean_lat = raw['latitude'].mean()
