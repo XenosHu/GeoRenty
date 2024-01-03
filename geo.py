@@ -49,20 +49,18 @@ st.pydeck_chart(pdk.Deck(
         latitude=40.703,
         longitude=-74.009,
         zoom=11,
-        pitch = 50
-        #pitch=st.slider('Adjust View Angle', 0, 60, 50)
+        pitch=50,
     ),
     layers=[
         pdk.Layer(
-            'ColumnLayer',
+            "HeatmapLayer",
             data=grouped_data,
             get_position='[longitude, latitude]',
-            get_elevation='price',
-            elevation_scale=1,
-            get_fill_color='color',
-            radius=100,
-            pickable=True,
-            extruded=True,
+            get_weight='price',
+            radius_pixels=60,
+            intensity=1,
+            threshold=0.05,
+            pickable=True
         ),
     ],
 ))
