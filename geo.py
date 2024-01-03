@@ -39,23 +39,42 @@
 
 
 
-import streamlit as st
-import pandas as pd
-import leafmap.foliumap as leafmap
+# import streamlit as st
+# import pandas as pd
+# import leafmap.foliumap as leafmap
 
 
-# Load cleaned data (replace 'cleaned_zillow_data' with the path to your cleaned data file)
+# # Load cleaned data (replace 'cleaned_zillow_data' with the path to your cleaned data file)
+# cleaned_zillow_data = pd.read_csv('zillow.csv')
+
+# # Initialize the map
+# m = leafmap.Map(center=[cleaned_zillow_data['latitude'].mean(), cleaned_zillow_data['longitude'].mean()], zoom=10)
+
+# # Add points to the map
+# for _, row in cleaned_zillow_data.iterrows():
+#     m.add_marker(location=[row['latitude'], row['longitude']], 
+#                  popup=f"Year Built: {row['yearBuilt']}, City: {row['city']}, State: {row['state']}, Bedrooms: {row['bedrooms']}, Bathrooms: {row['bathrooms']}, Area: {row['area']}")
+
+# # Display the map
+# st.title("Zillow Property Map")
+# st.write("Interactive map of properties")
+# st.leafmap(m)
+
+
+import folium
+
+# Load cleaned data
 cleaned_zillow_data = pd.read_csv('zillow.csv')
 
 # Initialize the map
-m = leafmap.Map(center=[cleaned_zillow_data['latitude'].mean(), cleaned_zillow_data['longitude'].mean()], zoom=10)
+m = folium.Map(location=[cleaned_zillow_data['latitude'].mean(), cleaned_zillow_data['longitude'].mean()], zoom_start=10)
 
 # Add points to the map
 for _, row in cleaned_zillow_data.iterrows():
-    m.add_marker(location=[row['latitude'], row['longitude']], 
-                 popup=f"Year Built: {row['yearBuilt']}, City: {row['city']}, State: {row['state']}, Bedrooms: {row['bedrooms']}, Bathrooms: {row['bathrooms']}, Area: {row['area']}")
+    folium.Marker(location=[row['latitude'], row['longitude']], 
+                  popup=f"Year Built: {row['yearBuilt']}, City: {row['city']}, State: {row['state']}, Bedrooms: {row['bedrooms']}, Bathrooms: {row['bathrooms']}, Area: {row['area']}").add_to(m)
 
 # Display the map
 st.title("Zillow Property Map")
 st.write("Interactive map of properties")
-st.leafmap(m)
+st._folium(m, width=700, height=500)
