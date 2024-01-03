@@ -60,8 +60,8 @@ import pydeck as pdk
 # st.write("Interactive map of properties")
 # st.leafmap(m)
 
-
 import folium
+from streamlit.components.v1 import components
 
 # Load cleaned data
 cleaned_zillow_data = pd.read_csv('zillow.csv')
