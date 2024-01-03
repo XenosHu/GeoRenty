@@ -20,6 +20,23 @@ raw = raw[raw['homeType']== 'APARTMENT']
 max_lat = raw['latitude'].max()
 max_lon = raw['longitude'].max()
 
+raw['postal_code'] = raw['postal_code'].astype(int)
+
+# Group by 'postal_code' and calculate the average price
+grouped_data = raw.groupby('postal_code').agg({'price': 'mean', 'latitude': 'mean', 'longitude': 'mean'}).reset_index()
+
+# Define a function to convert price to a color (green to red gradient)
+def price_to_color(price):
+    max_price = grouped_data['price'].max()
+    min_price = grouped_data['price'].min()
+    normalized_price = (price - min_price) / (max_price - min_price)
+    red = int(normalized_price * 255)
+    green = int((1 - normalized_price) * 255)
+    blue = 0
+    return [red, green, blue, 255]
+
+grouped_data['color'] = grouped_data['price'].apply(price_to_color)
+
 # PyDeck map
 st.pydeck_chart(pdk.Deck(
     map_style=None,
@@ -41,12 +58,12 @@ st.pydeck_chart(pdk.Deck(
         ),
         pdk.Layer(
             'ColumnLayer',
-            data=raw,
+            data=grouped_data,
             get_position='[longitude, latitude]',
             get_elevation='price',
             elevation_scale=1,
+            get_fill_color='color',
             radius=100,
-            get_fill_color='[255, 165, 0, 255]',  # Orange color
             pickable=True,
             extruded=True,
         ),
