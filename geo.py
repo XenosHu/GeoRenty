@@ -6,6 +6,9 @@ import pydeck as pdk
 # Load data
 raw = pd.read_csv('zillow.csv')
 
+# Remove rows where 'price' is NaN
+raw = raw.dropna(subset=['price'])
+
 # Parse the 'price' column to integers
 raw['price'] = raw['price'].replace('[\$,\/mo]', '', regex=True).astype(int)
 
