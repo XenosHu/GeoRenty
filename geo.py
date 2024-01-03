@@ -16,6 +16,9 @@ raw['price'] = raw['price'].replace('[\$,\/mo\+]', '', regex=True)
 raw['price'] = raw['price'].astype(int)
 raw = raw[raw['homeType']== 'APARTMENT']
 
+raw = raw[raw['price'] != 160000]
+raw = raw[raw['price'] != 80000]
+
 # Calculate the mean latitude and longitude
 max_lat = raw['latitude'].max()
 max_lon = raw['longitude'].max()
