@@ -45,7 +45,7 @@ import leafmap.foliumap as leafmap
 
 
 # Load cleaned data (replace 'cleaned_zillow_data' with the path to your cleaned data file)
-cleaned_zillow_data = pd.read_csv('path_to_cleaned_zillow_data.csv')
+cleaned_zillow_data = pd.read_csv('zillow.csv')
 
 # Initialize the map
 m = leafmap.Map(center=[cleaned_zillow_data['latitude'].mean(), cleaned_zillow_data['longitude'].mean()], zoom=10)
